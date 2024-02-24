@@ -1,0 +1,72 @@
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS roles CASCADE;
+DROP TABLE IF EXISTS users_roles CASCADE;
+DROP TABLE IF EXISTS authors CASCADE;
+DROP TABLE IF EXISTS genres CASCADE;
+DROP TABLE IF EXISTS books CASCADE;
+DROP TABLE IF EXISTS orders CASCADE;
+DROP TABLE IF EXISTS orders_books CASCADE;
+
+CREATE TABLE users (
+	id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	name VARCHAR(256),
+	surname VARCHAR(256),
+	username VARCHAR(256), -- Псевдоним --
+	email VARCHAR(256),
+	password VARCHAR(256),
+	birthdate DATE -- Дата гггг-мм-дд (1999-1-8) --
+);
+
+CREATE TABLE roles (
+	id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	role VARCHAR(128)
+);
+
+CREATE TABLE users_roles (
+	id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	user_id INT NOT NULL REFERENCES users,
+	role_id INT NOT NULL REFERENCES roles,
+	UNIQUE (user_id, role_id)
+);
+
+CREATE TABLE authors (
+	id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	full_name VARCHAR(256)
+);
+
+CREATE TABLE genres (
+	id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	genre VARCHAR(128)
+);
+
+CREATE TABLE books (
+	id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	title VARCHAR(256),
+	
+	author_id INT,
+	CONSTRAINT fk_authors FOREIGN KEY(author_id) REFERENCES authors(id),
+	
+	release_date DATE, -- Дата гггг-мм-дд (1999-1-8) --
+	
+	genre_id INT,
+	CONSTRAINT fk_genres FOREIGN KEY(genre_id) REFERENCES genres(id),
+	
+	cover VARCHAR(256), -- Обложка (ссылка) --
+	pages SMALLINT,
+	price SMALLINT,
+	amount INT -- Кол-во в наличии --
+);
+
+CREATE TABLE orders (
+	id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	
+	user_id INT,
+	CONSTRAINT fk_users FOREIGN KEY(user_id) REFERENCES users(id)
+);
+
+CREATE TABLE orders_books (
+	id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+	order_id INT NOT NULL REFERENCES orders,
+	book_id INT NOT NULL REFERENCES books,
+	UNIQUE (order_id, book_id)
+);
