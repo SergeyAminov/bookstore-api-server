@@ -1,5 +1,6 @@
 package ru.aminov.bookstoreapi.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,6 +28,6 @@ public class Order {
 
     @JsonIgnore
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    List<OrderBook> orderBooks;
+    private List<OrderBook> orderBooks = new ArrayList<>();
 
 }

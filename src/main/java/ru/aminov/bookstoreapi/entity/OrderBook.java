@@ -19,10 +19,10 @@ public class OrderBook {
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
-    Order order;
+    private Order order;
 
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)
-    Book book;
+    private Book book;
 
 }

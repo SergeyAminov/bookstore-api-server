@@ -48,6 +48,6 @@ public class User {
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    List<UserRole> userRoles;
+    private List<UserRole> userRoles = new ArrayList<>();
 
 }

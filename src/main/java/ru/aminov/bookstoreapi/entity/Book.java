@@ -51,6 +51,6 @@ public class Book {
 
     @JsonIgnore
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    List<OrderBook> orderBooks = new ArrayList<>();
+    private List<OrderBook> orderBooks = new ArrayList<>();
 
 }

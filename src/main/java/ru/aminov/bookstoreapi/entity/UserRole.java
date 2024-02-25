@@ -19,10 +19,10 @@ public class UserRole {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
-    Role role;
+    private Role role;
 
 }
