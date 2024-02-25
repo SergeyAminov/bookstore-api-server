@@ -1,6 +1,7 @@
 package ru.aminov.bookstoreapi.entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "authors")
+@Table(name = "books")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,14 +26,14 @@ public class Book {
     @Column(name = "title")
     private String title;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
     @Column(name = "release_date")
     private LocalDate releaseDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "genre_id", nullable = false)
     private Genre genre;
 
@@ -50,6 +51,6 @@ public class Book {
 
     @JsonIgnore
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    List<OrderBook> orderBooks;
+    List<OrderBook> orderBooks = new ArrayList<>();
 
 }
