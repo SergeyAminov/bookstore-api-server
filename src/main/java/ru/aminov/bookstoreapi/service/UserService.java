@@ -36,7 +36,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public User create(User user) {
+    public User create(User user) throws RuntimeException {
 
         if (this.userRepository.existsByUsername(user.getUsername())) {
             throw new RuntimeException("Пользователь с таким именем уже существует");

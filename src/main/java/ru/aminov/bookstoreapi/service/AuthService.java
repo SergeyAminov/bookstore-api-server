@@ -1,8 +1,11 @@
 package ru.aminov.bookstoreapi.service;
 
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +49,7 @@ public class AuthService {
 
     /* Регистрация пользователя */
     @Transactional
-    public UserDto register(User requestUser) {
+    public UserDto register(User requestUser) throws RuntimeException {
 
         User user = new User();
         user.setUsername(requestUser.getUsername());
@@ -62,14 +65,18 @@ public class AuthService {
 
     /* Аутентификация пользователя */
     @Transactional
-    public UserDto login(User requestUser) {
+    public UserDto login(User requestUser) throws RuntimeException, AuthenticationException {
+
+        User user = this.userService.findByUsername(requestUser.getUsername());
+
+        if (Objects.isNull(user))
+            throw new RuntimeException("Неверное имя пользователя");
 
         this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
             requestUser.getUsername(),
             requestUser.getPassword()
         ));
 
-        User user = this.userService.findByUsername(requestUser.getUsername());
         UserDto dto = this.userMapper.toDto(user);
         String jwt = this.jwtService.generateToken(user);
         dto.setToken(jwt);
