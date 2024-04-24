@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -25,6 +26,11 @@ public class BookController {
     @GetMapping("/books")
     public List<BookDto> getBooks() {
         return this.bookService.findAll();
+    }
+
+    @GetMapping("/books/{id}")
+    public BookDto getById(@PathVariable Integer id) throws Exception{
+        return this.bookService.getById(id);
     }
     
 }

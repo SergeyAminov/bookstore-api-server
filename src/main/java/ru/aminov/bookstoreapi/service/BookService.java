@@ -1,6 +1,7 @@
 package ru.aminov.bookstoreapi.service;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,13 @@ public class BookService {
                 .stream()
                 .map(bookMapper::toDto)
                 .toList();
+    }
+
+    public BookDto getById(Integer id) throws Exception{
+        if (!Objects.isNull(id))
+            return this.bookMapper.toDto(this.bookRepository.findById(id).get());    
+        throw new Exception("Wrong id");
+        
     }
 
 }
